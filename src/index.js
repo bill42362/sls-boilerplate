@@ -58,15 +58,23 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     }
 
     server[httpMethod](reformedPath, (request, response, next) => {
+        const headers = Object.assign({}, request.headers, {
+            Accept: request.headers.accept,
+            'Accept-Encoding': request.headers['accept-encoding'],
+            'Accept-Language': request.headers['accept-language'],
+            Host: request.headers.host,
+            'User-Agent': request.headers['user-agent'],
+            Referer: request.headers.referer,
+        });
         handler(
             {
-                resource: pathTemplate,
-                path: request.url,
+                resource: `/${pathTemplate}`,
+                path: request.url.replace(/\?.*/, ''),
                 httpMethod: request.method,
-                headers: request.headers,
-                queryStringParameters: request.query,
-                pathParameters: request.params,
-                body: JSON.stringify(request.body),
+                headers,
+                queryStringParameters: 0 === Object.keys(request.query).length ? null : request.query,
+                pathParameters: 0 === Object.keys(request.params).length ? null : request.params,
+                body: 0 === Object.keys(request.body).length ? null : JSON.stringify(request.body),
             },
             {
                 functionName: slsFunctionKey,

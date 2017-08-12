@@ -9,6 +9,7 @@ export const hello = (event, context, callback) => {
             pathParameters: event.pathParameters,
             queryParameters: event.queryStringParameters,
             postParameters: JSON.parse(event.body),
+            event
         }),
     };
     callback(null, response);
