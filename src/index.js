@@ -8,7 +8,26 @@ import SlsHandler from './handler.js';
  
 const PORT = process.env.PORT || '3000';
 const slsConfig = Yaml.safeLoad(Fs.readFileSync(`${__dirname}/../serverless.yml`, 'utf8'));
+
 const server = Express();
+const expressSuccessHandler = (handlerResponse, expressResponse) => {
+    expressResponse.status(handlerResponse.statusCode);
+    expressResponse.send(handlerResponse.body);
+};
+const expressErrorHandler = (handlerError, expressResponse) => {
+    expressResponse.status(500);
+    expressResponse.send({
+        errorMessage: handlerError.message || handlerError,
+        errorType: handlerError.name || 'Error',
+    });
+};
+const expressHandler = (handlerError, handlerResponse, expressResponse) => {
+    if(handlerError) {
+        expressErrorHandler(handlerError, expressResponse);
+    } else {
+        expressSuccessHandler(handlerResponse, expressResponse);
+    }
+};
 
 Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     const slsFunction = slsConfig.functions[slsFunctionKey];
@@ -37,19 +56,13 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     server[httpMethod](reformedPath, (request, response, next) => {
         handler(
             {pathParameters: request.params},
-            null,
-            (error, handlerResponse) => {
-                if(error) {
-                    response.status(500);
-                    response.send({
-                        errorMessage: error.message,
-                        errorType: error.name,
-                    });
-                } else {
-                    response.status(handlerResponse.statusCode);
-                    response.send(handlerResponse.body);
-                }
-            }
+            {
+                functionName: slsFunctionKey,
+                succeed: (handlerResponse) => { expressSuccessHandler(handlerResponse, response); },
+                fail: (handlerError) => { expressErrorHandler(handlerError, response); },
+                done: (handlerError, handlerResponse) => { expressHandler(handlerError, handlerResponse, response); },
+            },
+            (error, handlerResponse) => { expressHandler(error, handlerResponse, response); }
         );
     });
 });

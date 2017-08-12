@@ -6,8 +6,7 @@ export const hello = (event, context, callback) => {
         statusCode: 200,
         body: JSON.stringify({
             message: 'Hello!',
-            input: event.pathParameters,
-            enviroment: process.env,
+            pathParameters: event.pathParameters,
         }),
     };
     callback(null, response);
