@@ -4,3 +4,12 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+.coverage
+*.swp
+*.log
+*.DS_Store
+*backup*
+*config.json
+config.json
+cover/
