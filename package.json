@@ -2,6 +2,10 @@
   "name": "sls-boilerplate",
   "version": "1.0.0",
   "description": "Serverless boilerplate with express server, auto test and web document.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bill42362/sls-boilerplate.git"
+  },
   "main": "dist/index.js",
   "scripts": {
     "rmdist": "rimraf dist",
