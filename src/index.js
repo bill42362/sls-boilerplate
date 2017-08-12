@@ -3,4 +3,4 @@
 
 import SlsHandler from './handler.js';
 
-console.log(Object.keys(SlsHandler));
+console.log(SlsHandler);
