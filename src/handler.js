@@ -1,7 +1,7 @@
 // handler.js
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
+export const hello = (event, context, callback) => {
     const response = {
         statusCode: 200,
         body: JSON.stringify({

@@ -16,7 +16,7 @@ package:
 functions:
     hello:
         handler: dist/handler.hello
-        memorySize: 64
+        memorySize: 128
         events:
             - http:
                 path: hello/{pathnameInput}
