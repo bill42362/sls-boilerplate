@@ -3,15 +3,15 @@
 import Express from 'express';
 import Yaml from 'js-yaml';
 import Fs from 'fs';
+import BodyParser from 'body-parser';
 
 import SlsHandler from './handler.js';
  
 const PORT = process.env.PORT || '3000';
 const slsConfig = Yaml.safeLoad(Fs.readFileSync(`${__dirname}/../serverless.yml`, 'utf8'));
-
-const server = Express();
 const expressSuccessHandler = (handlerResponse, expressResponse) => {
     expressResponse.status(handlerResponse.statusCode);
+    expressResponse.set('Content-Type', 'application/json');
     expressResponse.send(handlerResponse.body);
 };
 const expressErrorHandler = (handlerError, expressResponse) => {
@@ -28,6 +28,10 @@ const expressHandler = (handlerError, handlerResponse, expressResponse) => {
         expressSuccessHandler(handlerResponse, expressResponse);
     }
 };
+
+const server = Express();
+server.use(BodyParser.urlencoded({ extended: false }));
+server.use(BodyParser.json());
 
 Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     const slsFunction = slsConfig.functions[slsFunctionKey];
@@ -55,7 +59,15 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
 
     server[httpMethod](reformedPath, (request, response, next) => {
         handler(
-            {pathParameters: request.params},
+            {
+                resource: pathTemplate,
+                path: request.url,
+                httpMethod: request.method,
+                headers: request.headers,
+                queryStringParameters: request.query,
+                pathParameters: request.params,
+                body: JSON.stringify(request.body),
+            },
             {
                 functionName: slsFunctionKey,
                 succeed: (handlerResponse) => { expressSuccessHandler(handlerResponse, response); },

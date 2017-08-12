@@ -28,5 +28,5 @@ functions:
         events:
             - http:
                 path: hello/{pathnameInput}
-                method: get
+                method: post
                 cors: true

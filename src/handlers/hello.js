@@ -7,6 +7,8 @@ export const hello = (event, context, callback) => {
         body: JSON.stringify({
             message: 'Hello!',
             pathParameters: event.pathParameters,
+            queryParameters: event.queryStringParameters,
+            postParameters: JSON.parse(event.body),
         }),
     };
     callback(null, response);
