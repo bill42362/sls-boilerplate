@@ -1,0 +1,17 @@
+{
+  "name": "sls-boilerplate",
+  "version": "1.0.0",
+  "description": "Serverless boilerplate with express server, auto test and web document.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "serverless",
+    "boilerplate",
+    "express",
+    "test"
+  ],
+  "author": "Pi-Yin Hsiao",
+  "license": "ISC"
+}

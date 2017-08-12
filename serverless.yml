@@ -1,0 +1,24 @@
+service: sls-boilerplate
+
+provider:
+    name: aws
+    runtime: nodejs6.10
+    stage: dev
+    region: ap-northeast-2
+    environment:
+        HOST_MODE: "serverless"
+
+package:
+    include:
+    exclude:
+        - src/**
+
+functions:
+    hello:
+        handler: dist/handler.hello
+        memorySize: 64
+        events:
+            - http:
+                path: hello/{pathnameInput}
+                method: get
+                cors: true
