@@ -6,7 +6,7 @@ export const hello = (event, context, callback) => {
         statusCode: 200,
         body: JSON.stringify({
             message: 'Go Serverless v1.0! Your function executed successfully!',
-            input: event,
+            input: event.pathParameters,
         }),
     };
     callback(null, response);

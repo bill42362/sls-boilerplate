@@ -19,6 +19,14 @@ functions:
         memorySize: 128
         events:
             - http:
+                path: hello
+                method: get
+                cors: true
+    helloWithInput:
+        handler: dist/handler.hello
+        memorySize: 128
+        events:
+            - http:
                 path: hello/{pathnameInput}
                 method: get
                 cors: true
