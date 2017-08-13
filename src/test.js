@@ -14,7 +14,7 @@ const RESPONSE_NOT_FULLFILL = 'RESPONSE_NOT_FULLFILL';
 Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     if(!Tester[slsFunctionKey]) {
         console.log('  Testing of '.gray + `[${slsFunctionKey}]`.cyan + ':'.gray);
-        console.log('    [FAIL] Test not found.'.red);
+        console.log('    ' + '[FAIL]'.bgRed + ' Test not found.'.red);
         return;
     }
     Promise.all(Tester[slsFunctionKey].map(test => { return new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
             if(JSON.stringify(response) !== JSON.stringify(Object.assign({}, response, expectedResponse))) {
                 const result = [];
                 result.push(
-                    '    [FAIL]'.red
+                    '    ' + '[FAIL]'.bgRed
                         + ' Test of '.red
                         + `[${slsFunctionKey}]`.cyan
                         + ` which `.red + `${description}`.yellow,
@@ -63,7 +63,7 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
                     rej({reason: RESPONSE_NOT_FULLFILL, result });
                 });
             } else {
-               const result = '    [PASS]'.green
+               const result = '    ' + '[PASS]'.bgGreen
                     + ` Test of `.gray
                     + `[${slsFunctionKey}]`.cyan
                     + ` which `.gray + `${description}`.yellow;
@@ -73,10 +73,10 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         .catch(error => {
             if(RESPONSE_STATUS_ERROR === error.reason) {
                 resolve([
-                    `    [FAIL] `.red
+                    '    ' + '[FAIL]'.bgRed
                         + `Test of `.gray + `[${slsFunctionKey}]`.cyan
                         + ` which `.gray + `${description}`.yellow,
-                    `      Respond wrong status.`.red,
+                    `      because respond wrong status.`.red,
                     `      expectedResponseStatus: ${error.expectedResponseStatus}`.green,
                     `      responseStatus: ${error.responseStatus}`.red
                 ]);
@@ -84,7 +84,7 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
                 resolve(error.result);
             } else {
                 resolve([
-                    `    [FAIL]`.red
+                    '    ' + '[FAIL]'.bgRed
                         + ` Test of `.gray + `[${slsFunctionKey}]`.cyan
                         + ` which `.gray + `${description}`.yellow,
                     '      because api call error.'.red,
