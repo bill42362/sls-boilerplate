@@ -4,6 +4,7 @@ import 'isomorphic-fetch';
 import 'colors';
 import Yaml from 'js-yaml';
 import Fs from 'fs';
+import { BASE_URL } from './test.config.js';
 import Tester from './tester.js';
 const Diff = require('diff');
 
@@ -18,11 +19,11 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         return;
     }
     Promise.all(Tester[slsFunctionKey].map(test => { return new Promise((resolve, reject) => {
-        const { description, url, method, queries, body, expectedResponseStatus, expectedResponse } = test;
+        const { description, path, method, queries, body, expectedResponseStatus, expectedResponse } = test;
         const queryString = Object.keys(queries).reduce((current, queryKey) => {
             return `${current}&${queryKey}=${queries[queryKey]}`;
         }, '');
-        fetch(`${url}?${queryString}`, { method, body })
+        fetch(`${BASE_URL}${path}?${queryString}`, { method, body })
         .then(response => { 
             if(expectedResponseStatus !== response.status) {
                 return new Promise((res, rej) => {
