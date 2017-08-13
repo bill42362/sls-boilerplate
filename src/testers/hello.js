@@ -4,7 +4,7 @@
 const tests = [
     {
         description: 'should respond query parameters with null post and path parameters.',
-        url: 'http://localhost:3000/hello',
+        path: '/hello',
         method: 'get',
         queries: {q: '1'},
         body: null,
@@ -17,7 +17,7 @@ const tests = [
     },
     {
         description: 'should fail because api call error.',
-        url: 'http://localhost:3000/hello',
+        path: '/hello',
         method: 'got',
         queries: {q: '1'},
         body: null,
@@ -30,7 +30,7 @@ const tests = [
     },
     {
         description: 'should fail because respond wrong status.',
-        url: 'http://localhost:3000/hello',
+        path: '/hello',
         method: 'get',
         queries: {q: '1'},
         body: null,
@@ -43,7 +43,7 @@ const tests = [
     },
     {
         description: 'should fail because response not fullfill.',
-        url: 'http://localhost:3000/hello',
+        path: '/hello',
         method: 'get',
         queries: {q: '1'},
         body: null,

@@ -8,12 +8,13 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "rmdist": "rimraf dist",
-    "buildjs": "babel src -d dist --ignore .test.js",
-    "build": "npm run rmdist && npm run buildjs",
+    "clean": "rimraf dist",
+    "buildjs": "NODE_ENV=production babel src -d dist --ignore .test.js",
+    "build": "npm run clean && npm run buildjs",
     "deploy": "npm run build && sls deploy -v",
     "start": "nodemon --ignore dist --exec babel-node src",
-    "test": "nodemon --ignore dist --exec babel-node src/test.js"
+    "test": "NODE_ENV=aws babel-node src/test.js",
+    "devtest": "nodemon --ignore dist --exec babel-node src/test.js"
   },
   "keywords": [
     "serverless",
