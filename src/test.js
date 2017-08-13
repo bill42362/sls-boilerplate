@@ -20,7 +20,8 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         .then(response => { 
             if(expectedResponseStatus !== response.status) {
                 console.log(
-                    `Respond wrong status. While testing ${slsFunctionKey} which ${description}`,
+                    `Respond wrong status.`,
+                    `While testing ${slsFunctionKey} which ${description}`,
                     "\n  expectedResponseStatus:", expectedResponseStatus,
                     "\n  response.status:", response.status
                 );
@@ -28,11 +29,24 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
             return response.json();
         })
         .then(response => {
-            console.log(response);
+            const responseKeys = Object.keys(response);
+            Object.keys(expectedResponse).forEach(expectedResponseKey => {
+                if(-1 === responseKeys.indexOf(expectedResponseKey)) {
+                    console.log(
+                        `Expected response key not found.`,
+                        `While testing ${slsFunctionKey} which ${description}`,
+                        "\n  expectedResponseKey:", expectedResponseKey,
+                        "\n  expectedResponse:", expectedResponse,
+                        "\n  response:", response
+                    );
+                    return;
+                }
+            });
         })
         .catch(error => {
             console.log(
-                `API call error. While testing ${slsFunctionKey} which ${description}`,
+                `API call error.`,
+                `While testing ${slsFunctionKey} which ${description}`,
                 "\n  error:", error
             );
         });
