@@ -10,7 +10,6 @@ const tests = [
         body: null,
         expectedResponseStatus: 200,
         expectedResponse: {
-            qq: null,
             pathParameters: null,
             queryParameters: {q: '1'},
             postParameters: null,

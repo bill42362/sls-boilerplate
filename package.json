@@ -13,7 +13,7 @@
     "build": "npm run rmdist && npm run buildjs",
     "deploy": "npm run build && sls deploy -v",
     "start": "nodemon --ignore dist --exec babel-node src",
-    "test": "babel-node src/test.js"
+    "test": "nodemon --ignore dist --exec babel-node src/test.js"
   },
   "keywords": [
     "serverless",
@@ -28,6 +28,8 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.17.2",
+    "colors": "^1.1.2",
+    "diff": "^3.3.0",
     "es6-promise": "^4.1.1",
     "express": "^4.15.4",
     "isomorphic-fetch": "^2.2.1",
