@@ -89,7 +89,11 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     };
 
     if(httpCors) {
-        server.options(reformedPath, Cors({methods: httpMethod, allowedHeaders: 'Content-Type, Authorization'}));
+        server.options(reformedPath, Cors({
+            methods: ['OPTIONS', httpMethod.toUpperCase()],
+            allowedHeaders: 'Content-Type, Authorization',
+            optionsSuccessStatus: 200,
+        }));
         server[httpMethod](reformedPath, Cors(), expressMocker);
     } else {
         server[httpMethod](reformedPath, expressMocker);
