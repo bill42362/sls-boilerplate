@@ -1,5 +1,6 @@
 # sls-boilerplate
 Serverless boilerplate with express server, auto test and web document.
+* Tested serverless version: 1.19.0+
 
 ## Installation
 ```bash
