@@ -1,6 +1,7 @@
 // index.js
 'use strict';
 import Express from 'express';
+import Cors from 'cors';
 import Yaml from 'js-yaml';
 import Fs from 'fs';
 import BodyParser from 'body-parser';
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || '3000';
 const slsConfig = Yaml.safeLoad(Fs.readFileSync(`${__dirname}/../serverless.yml`, 'utf8'));
 const expressSuccessHandler = (handlerResponse, expressResponse) => {
     expressResponse.status(handlerResponse.statusCode);
-    expressResponse.set('Content-Type', 'application/json');
+    expressResponse.set(handlerResponse.headers);
     expressResponse.send(handlerResponse.body);
 };
 const expressErrorHandler = (handlerError, expressResponse) => {
@@ -46,6 +47,7 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
     if(!httpEventObject) { console.log('Function not process http event. function:', slsFunctionKey); return; }
     const httpEvent = httpEventObject.http;
     const httpMethod = httpEvent.method || 'get';
+    const httpCors = !!httpEvent.cors;
 
     // Reform pathname parameter syntax from aws style (/{param}) to express style (/:param).
     const pathTemplate = httpEvent.path;
@@ -57,7 +59,7 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         });
     }
 
-    server[httpMethod](reformedPath, (request, response, next) => {
+    const expressMocker = (request, response, next) => {
         const headers = Object.assign({}, request.headers, {
             Accept: request.headers.accept,
             'Accept-Encoding': request.headers['accept-encoding'],
@@ -84,7 +86,14 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
             },
             (error, handlerResponse) => { expressHandler(error, handlerResponse, response); }
         );
-    });
+    };
+
+    if(httpCors) {
+        server.options(reformedPath, Cors({methods: httpMethod, allowedHeaders: 'Content-Type, Authorization'}));
+        server[httpMethod](reformedPath, Cors(), expressMocker);
+    } else {
+        server[httpMethod](reformedPath, expressMocker);
+    }
 });
 
 server.listen(PORT);
