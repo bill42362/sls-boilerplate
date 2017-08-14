@@ -12,9 +12,11 @@
     "buildjs": "cross-env NODE_ENV=production babel src -d dist --ignore .test.js",
     "build": "npm run clean && npm run buildjs",
     "deploy": "npm run build && sls deploy -v",
-    "start": "nodemon --ignore dist --exec babel-node src",
+    "start": "npm run build && node dist",
+    "start:auto": "nodemon --ignore dist --exec babel-node src",
     "test": "cross-env NODE_ENV=aws babel-node src/test.js",
-    "devtest": "nodemon --ignore dist --exec babel-node src/test.js"
+    "devtest": "npm run build && node dist/test.js",
+    "devtest:auto": "nodemon --ignore dist --exec babel-node src/test.js"
   },
   "keywords": [
     "serverless",
