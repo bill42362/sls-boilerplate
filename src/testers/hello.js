@@ -7,6 +7,19 @@ const tests = [
         path: '/hello',
         method: 'get',
         queries: {q: '1'},
+        // body key omitted
+        expectedResponseStatus: 200,
+        expectedResponse: {
+            pathParameters: null,
+            queryParameters: {q: '1'},
+            postParameters: null,
+        },
+    },
+    {
+        description: 'should respond query parameters with undefined post and path parameters.',
+        path: '/hello',
+        method: 'get',
+        queries: {q: '1'},
         body: null,
         expectedResponseStatus: 200,
         expectedResponse: {
