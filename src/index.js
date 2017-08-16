@@ -7,7 +7,7 @@ import Fs from 'fs';
 import BodyParser from 'body-parser';
 
 import SlsHandler from './handler.js';
- 
+
 const PORT = process.env.PORT || '3000';
 const slsConfig = Yaml.safeLoad(Fs.readFileSync(`${__dirname}/../serverless.yml`, 'utf8'));
 const expressSuccessHandler = (handlerResponse, expressResponse) => {

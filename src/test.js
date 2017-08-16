@@ -19,11 +19,11 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         return;
     }
     Promise.all(Tester[slsFunctionKey].map(test => { return new Promise((resolve, reject) => {
-        const { description, path, method, queries, body, expectedResponseStatus, expectedResponse } = test;
+        const { description, path, method, queries, headers, body, expectedResponseStatus, expectedResponse } = test;
         const queryString = Object.keys(queries).reduce((current, queryKey) => {
             return `${current}&${queryKey}=${queries[queryKey]}`;
         }, '');
-        fetch(`${BASE_URL}${path}?${queryString}`, { method, body })
+        fetch(`${BASE_URL}${path}?${queryString}`, { method, headers, body })
         .then(response => { 
             if(expectedResponseStatus !== response.status) {
                 return new Promise((res, rej) => {
