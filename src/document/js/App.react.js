@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import SideBar from './SideBar.react.js';
+import ApiDocument from './ApiDocument.react.js';
 import '../css/app.less';
 
 const ConnectedSideBar = connect(
@@ -18,11 +19,16 @@ const ConnectedSideBar = connect(
 class App extends React.Component {
     constructor(props) { super(props); }
     render() {
+        const { apiDocuments } = this.props;
         return <div className='app'>
             <div className='side-bar-wrapper'>
                 <ConnectedSideBar />
             </div>
-            <div className='content-wrapper'></div>
+            <div className='content-wrapper'>
+                {apiDocuments.map((apiDocument, index) => {
+                    return <ApiDocument key={index} apiDocument={apiDocument} />;
+                })}
+            </div>
         </div>;
     }
 }

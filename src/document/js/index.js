@@ -2,7 +2,7 @@
 'use strict';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ApiDocuments from './ApiDocuments.js';
@@ -15,9 +15,19 @@ const reducer = combineReducers({
 })
 const store = createStore(reducer, applyMiddleware(ReduxThunk));
 
+const ConnectedApp = connect(
+    state => {
+        return {
+            apiDocuments: state.apiDocuments,
+        };
+    },
+    dispatch => { return {
+    }; },
+)(App);
+
 ReactDOM.render(
     <Provider store={store} >
-        <App />
+        <ConnectedApp />
     </Provider>,
     document.getElementById('app-root')
 );

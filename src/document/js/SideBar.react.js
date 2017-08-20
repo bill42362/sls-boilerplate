@@ -1,16 +1,8 @@
 // SideBar.react.js
 'use strict';
 import React from 'react';
+import { badgeTypeMap } from './SharedConsts.js';
 import '../css/side-bar.less';
-
-const badgeTypeMap = {
-    get: {badgeType: 'primary', display: 'GET'},
-    post: {badgeType: 'success', display: 'POS'},
-    put: {badgeType: 'success', display: 'PUT'},
-    option: {badgeType: 'info', display: 'OPT'},
-    delete: {badgeType: 'danger', display: 'DEL'},
-    default: {badgeType: 'secondary'},
-};
 
 class SideBar extends React.Component {
     constructor(props) { super(props); }
