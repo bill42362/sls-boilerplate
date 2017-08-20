@@ -24,9 +24,16 @@ export default {
                     { loader: 'less-loader', },
                 ],
             },
+            {
+                test: /\.css/,
+                use: [
+                    { loader: 'style-loader', },
+                    { loader: 'css-loader', },
+                ],
+            },
         ]
     },
-    devtool: 'source-map',
+    devtool: isProd ? false : 'source-map',
     resolve: {
         extensions: ['.js', '.jsx'],
         alias: {

@@ -1,5 +1,14 @@
 // app.less
 div#app-root {
     div.app {
+        display: flex;
+        min-height: 100vh;
+        div.side-bar-wrapper {
+            flex: 0.2;
+            padding: 15px;
+        }
+        div.content-wrapper {
+            flex: auto;
+        }
     }
 }
