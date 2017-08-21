@@ -1,15 +1,17 @@
 // app.less
 div#app-root {
     div.app {
-        display: flex;
+        position: relative;
         min-height: 100vh;
         div.side-bar-wrapper {
-            flex: 0.2;
+            position: fixed;
             padding: 15px;
+            width: 20%;
+            max-height: 100vh;
+            overflow: scroll;
         }
         div.content-wrapper {
-            flex: 1;
-            padding: 15px 15px 15px 0px;
+            padding: 15px 15px 15px 20%;
         }
     }
 }
