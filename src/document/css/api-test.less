@@ -9,5 +9,36 @@ div.api-test {
             padding: 0.5em 1em;
             cursor: pointer;
         }
+        div.card-body {
+            table.table {
+                tbody {
+                    border-bottom: 1px solid #e9ecef;
+                    tr {
+                        th {
+                            padding-left: 0.5em;
+                            padding-right: 0.5em;
+                            min-width: 5em;
+                            background-color: lighten(#e9ecef, 5%);
+                            white-space: nowrap;
+                        }
+                        td {
+                            width: 100%; padding-left: 2em;
+                            table.table { margin-bottom: 0px; }
+                        }
+                    }
+                    tr.path td span.query-string {
+                        span.query-value { color: brown; }
+                    }
+                    tr.method td {
+                        &.get { color: rgb(0, 123, 255); }
+                        &.post { color: rgb(40, 167, 69); }
+                        &.put { color: rgb(40, 167, 69); }
+                        &.option { color: rgb(23, 162, 184); }
+                        &.delete { color: rgb(220, 53, 69); }
+                    }
+                    tr.headers td table.table { margin-bottom: 0px; }
+                }
+            }
+        }
     }
 }
