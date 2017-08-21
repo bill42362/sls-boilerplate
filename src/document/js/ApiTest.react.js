@@ -1,6 +1,8 @@
 // ApiTest.react.js
 'use strict';
 import React from 'react';
+import JsonPretty from 'react-json-pretty';
+import 'react-json-pretty/JSONPretty.monikai.styl';
 import '../css/api-test.less';
 
 class ApiTest extends React.Component {
@@ -35,8 +37,8 @@ class ApiTest extends React.Component {
         const queryKeys = Object.keys(apiTest.queries);
         const hasQueryString = queryKeys.length;
         return <div className='api-test'>
-            <div className='card' style={{height: cardHeight}} onClick={this.toggleFolding}>
-                <div className='card-header' ref='header'>
+            <div className='card' style={{height: cardHeight}}>
+                <div className='card-header' ref='header' onClick={this.toggleFolding}>
                     {apiTest.description}
                 </div>
                 <div className='card-body' ref='body'>
@@ -78,7 +80,9 @@ class ApiTest extends React.Component {
                             </tr>}
                             {!!apiTest.body && <tr className='body'>
                                 <th>body</th>
-                                <td>{apiTest.body}</td>
+                                <td>
+                                    <JsonPretty className='json-pretty' json={apiTest.body} />
+                                </td>
                             </tr>}
                         </tbody>
                     </table>
@@ -94,7 +98,7 @@ class ApiTest extends React.Component {
                             <tr className='body'>
                                 <th>body</th>
                                 <td>
-                                    <span className=''>{JSON.stringify(apiTest.expectedResponse)}</span>
+                                    <JsonPretty className='json-pretty' json={apiTest.expectedResponse} />
                                 </td>
                             </tr>
                         </tbody>
