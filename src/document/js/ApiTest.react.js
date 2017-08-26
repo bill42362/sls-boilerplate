@@ -33,7 +33,7 @@ class ApiTest extends React.Component {
     }
     componentDidMount() { this.updateCardHeight(); }
     render() {
-        const { apiTest, expressPath } = this.props;
+        const { baseUrl, apiTest, expressPath } = this.props;
         const { cardHeight } = this.state;
         const queryKeys = Object.keys(apiTest.queries);
         const hasQueryString = queryKeys.length;
@@ -51,6 +51,7 @@ class ApiTest extends React.Component {
                             <tr className='path'>
                                 <th>path</th>
                                 <td className={`path-content${noMatchedClassName}`}>
+                                    <span className='base-url'>{baseUrl}</span>
                                     <span className='path'>{fragmentedPath.map((fragment, index) => {
                                         const fragmentClassName = fragment.isArgument ? 'path-argument' : '';
                                         return <span className={fragmentClassName} key={index} >{fragment.display}</span>;

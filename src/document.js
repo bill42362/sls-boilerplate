@@ -3,6 +3,7 @@
 import Yaml from 'js-yaml';
 import Fs from 'fs';
 import Express from 'express';
+import { LOCAL_BASE_URL, AWS_BASE_URL, OTHER_BASE_URLS } from './test.config.js';
 import Tester from './tester.js';
 import { reformAwsPath } from './utils.js';
 
@@ -31,7 +32,14 @@ const getHttpFunctions = (functionKey) => {
 const httpFunctions = Object.keys(slsConfig.functions)
     .map(getHttpFunctions)
     .filter(functionData => !!functionData);
-const documentData = { httpFunctions };
+const documentData = {
+    baseUrls: {
+        local: LOCAL_BASE_URL,
+        aws: AWS_BASE_URL,
+        others: OTHER_BASE_URLS,
+    },
+    httpFunctions,
+};
 if(!Fs.existsSync(DOCUMENT_JSON_DIR)){ Fs.mkdirSync(DOCUMENT_JSON_DIR); }
 Fs.writeFileSync(
     `${DOCUMENT_JSON_DIR}/document.json`,

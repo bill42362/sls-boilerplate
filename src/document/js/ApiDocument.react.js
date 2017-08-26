@@ -1,9 +1,20 @@
 // ApiDocument.react.js
 'use strict';
+import { connect } from 'react-redux';
 import React from 'react';
 import ApiTest from './ApiTest.react.js';
 import { badgeTypeMap } from './SharedConsts.js';
 import '../css/api-document.less';
+
+const ConnectedApiTest = connect(
+    state => {
+        return {
+            baseUrl: state.baseUrls.using,
+        };
+    },
+    dispatch => { return {
+    }; },
+)(ApiTest);
 
 class ApiDocument extends React.Component {
     constructor(props) { super(props); }
@@ -24,7 +35,7 @@ class ApiDocument extends React.Component {
             </div>
             <div className='api-tests'>
                 {apiDocument.tests.map((test, index) => {
-                    return <ApiTest key={index} apiTest={test} expressPath={apiDocument.expressPath} />;
+                    return <ConnectedApiTest key={index} apiTest={test} expressPath={apiDocument.expressPath} />;
                 })}
             </div>
         </div>;
