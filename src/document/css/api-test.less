@@ -32,10 +32,13 @@ div.api-test {
                             color: @bootsrtapRed;
                             span { color: inherit; }
                         }
-                        span.base-url { color: silver; }
-                        span.path span.path-argument { color: @bootsrtapBlue; }
-                        span.query-string {
-                            span.query-value { color: @bootsrtapCyan; }
+                        a {
+                            color: black;
+                            span.base-url { color: silver; }
+                            span.path span.path-argument { color: @bootsrtapBlue; }
+                            span.query-string {
+                                span.query-value { color: @bootsrtapCyan; }
+                            }
                         }
                     }
                     tr.method td {

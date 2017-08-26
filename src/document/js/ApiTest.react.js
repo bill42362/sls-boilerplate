@@ -36,6 +36,9 @@ class ApiTest extends React.Component {
         const { baseUrl, apiTest, expressPath } = this.props;
         const { cardHeight } = this.state;
         const queryKeys = Object.keys(apiTest.queries);
+        const queryString = queryKeys.map(queryKey => `${queryKey}=${apiTest.queries[queryKey]}`).join('&');
+        const isGetPath = 'get' === apiTest.method.toLowerCase();
+        const fullPath = `${baseUrl}${apiTest.path}?${queryString}`;
         const hasQueryString = queryKeys.length;
         const noMatchedClassName = getMatchedExpressPath({targetPath: apiTest.path, expressPath }) ? '' : ' no-match';
         const fragmentedPath = splitPathByArguments({targetPath: apiTest.path, expressPath });
@@ -51,20 +54,22 @@ class ApiTest extends React.Component {
                             <tr className='path'>
                                 <th>path</th>
                                 <td className={`path-content${noMatchedClassName}`}>
-                                    <span className='base-url'>{baseUrl}</span>
-                                    <span className='path'>{fragmentedPath.map((fragment, index) => {
-                                        const fragmentClassName = fragment.isArgument ? 'path-argument' : '';
-                                        return <span className={fragmentClassName} key={index} >{fragment.display}</span>;
-                                    })}</span>
-                                    {hasQueryString && <span>?</span>}
-                                    {queryKeys.map((queryKey, queryIndex) => {
-                                        return <span className='query-string' key={queryIndex}>
-                                            <span className='query-key'>{queryKey}</span>
-                                            =
-                                            <span className='query-value'>{apiTest.queries[queryKey]}</span>
-                                            {queryKeys.length !== 1 + queryIndex && '&'}
-                                        </span>;
-                                    })}
+                                    <a href={isGetPath ? fullPath : undefined} target='_blank'>
+                                        <span className='base-url'>{baseUrl}</span>
+                                        <span className='path'>{fragmentedPath.map((fragment, index) => {
+                                            const fragmentClassName = fragment.isArgument ? 'path-argument' : '';
+                                            return <span className={fragmentClassName} key={index} >{fragment.display}</span>;
+                                        })}</span>
+                                        {hasQueryString && <span>?</span>}
+                                        {queryKeys.map((queryKey, queryIndex) => {
+                                            return <span className='query-string' key={queryIndex}>
+                                                <span className='query-key'>{queryKey}</span>
+                                                =
+                                                <span className='query-value'>{apiTest.queries[queryKey]}</span>
+                                                {queryKeys.length !== 1 + queryIndex && '&'}
+                                            </span>;
+                                        })}
+                                    </a>
                                 </td>
                             </tr>
                             <tr className='method'>
