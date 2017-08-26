@@ -24,7 +24,7 @@ class ApiDocument extends React.Component {
             </div>
             <div className='api-tests'>
                 {apiDocument.tests.map((test, index) => {
-                    return <ApiTest key={index} apiTest={test} />;
+                    return <ApiTest key={index} apiTest={test} expressPath={apiDocument.expressPath} />;
                 })}
             </div>
         </div>;

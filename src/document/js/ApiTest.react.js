@@ -2,6 +2,7 @@
 'use strict';
 import React from 'react';
 import JsonPretty from 'react-json-pretty';
+import { getMatchedExpressPath, splitPathByArguments } from '../../utils.js';
 import 'react-json-pretty/JSONPretty.monikai.styl';
 import '../css/api-test.less';
 
@@ -32,10 +33,12 @@ class ApiTest extends React.Component {
     }
     componentDidMount() { this.updateCardHeight(); }
     render() {
-        const { apiTest } = this.props;
+        const { apiTest, expressPath } = this.props;
         const { cardHeight } = this.state;
         const queryKeys = Object.keys(apiTest.queries);
         const hasQueryString = queryKeys.length;
+        const noMatchedClassName = getMatchedExpressPath({targetPath: apiTest.path, expressPath }) ? '' : ' no-match';
+        const fragmentedPath = splitPathByArguments({targetPath: apiTest.path, expressPath });
         return <div className='api-test'>
             <div className='card' style={{height: cardHeight}}>
                 <div className='card-header' ref='header' onClick={this.toggleFolding}>
@@ -47,8 +50,11 @@ class ApiTest extends React.Component {
                         <tbody>
                             <tr className='path'>
                                 <th>path</th>
-                                <td>
-                                    <span className='path'>{`${apiTest.path}`}</span>
+                                <td className={`path-content${noMatchedClassName}`}>
+                                    <span className='path'>{fragmentedPath.map((fragment, index) => {
+                                        const fragmentClassName = fragment.isArgument ? 'path-argument' : '';
+                                        return <span className={fragmentClassName} key={index} >{fragment.display}</span>;
+                                    })}</span>
                                     {hasQueryString && <span>?</span>}
                                     {queryKeys.map((queryKey, queryIndex) => {
                                         return <span className='query-string' key={queryIndex}>
