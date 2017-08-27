@@ -1,0 +1,29 @@
+// base-url.less
+@import './utils.less';
+@titleBackground: rgb(233, 236, 239);
+
+div.base-url {
+    ul.list-group {
+        li.list-group-item {
+            padding: 0px;
+            div.base-url-url {
+                display: flex;
+                div.base-url-url-title {
+                    flex: none;
+                    padding: 0.5rem 1rem;
+                    min-width: 5em;
+                    background-color: @titleBackground;
+                    box-sizing: content-box;
+                    cursor: pointer;
+                    transition: color .6s ease;
+                    &:hover { background-color: darken(@titleBackground, 5%); }
+                    &.using { color: @bootsrtapGreen; }
+                }
+                div.base-url-url-display {
+                    flex: 1;
+                    padding: 0.5rem 1rem;
+                }
+            }
+        }
+    }
+}
