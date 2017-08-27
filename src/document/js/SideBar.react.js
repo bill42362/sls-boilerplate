@@ -9,17 +9,21 @@ class SideBar extends React.Component {
     render() {
         const { apiDocuments } = this.props;
         return <div className='side-bar'>
-            <ul className='api-key-list list-group'>
+            <div className='anchor-list list-group'>
+                <a className='base-url-item list-group-item' href='#base-url-anchor'>Base Url</a>
                 {apiDocuments.map((apiDocument, index) => {
                     const badgeType = badgeTypeMap[apiDocument.method] || badgeTypeMap.default;
-                    return <li className='api-key-item list-group-item' key={index}>
+                    return <a
+                        className='api-key-item list-group-item' key={index}
+                        href={`#${apiDocument.functionKey}-anchor`}
+                    >
                         <span className={`api-method-badge badge badge-${badgeType.badgeType}`}>
                             {badgeType.display || apiDocument.method}
                         </span>
                         {apiDocument.functionKey}
-                    </li>;
+                    </a>;
                 })}
-            </ul>
+            </div>
         </div>;
     }
 }

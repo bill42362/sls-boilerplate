@@ -35,11 +35,15 @@ class App extends React.Component {
             </div>
             <div className='content-wrapper'>
                 <div className='base-url-wrapper'>
+                    <a className='in-site-anchor' id='base-url-anchor'/>
                     <ConnectedBaseUrl />
                 </div>
-                <div className='api-document-wrapper'>
+                <div className='api-documents-wrapper'>
                     {apiDocuments.map((apiDocument, index) => {
-                        return <ApiDocument key={index} apiDocument={apiDocument} />;
+                        return <div className='api-document-wrapper' key={index}>
+                            <a className='in-site-anchor' id={`${apiDocument.functionKey}-anchor`}/>
+                            <ApiDocument apiDocument={apiDocument} />
+                        </div>;
                     })}
                 </div>
             </div>
