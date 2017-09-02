@@ -7,9 +7,16 @@ div.side-bar {
             font-weight: 500;
         }
         a.api-key-item {
+            display: flex;
             color: inherit;
-            span.api-method-badge {
-                margin-right: 0.5em;
+            div.api-display {
+                flex: auto;
+                span.api-method-badge {
+                    margin-right: 0.5em;
+                }
+            }
+            div.api-test-result {
+                flex: none;
             }
         }
     }

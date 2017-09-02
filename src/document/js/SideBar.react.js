@@ -49,14 +49,26 @@ class SideBar extends React.Component {
                     const badgeType = badgeTypeMap[apiDocument.method] || badgeTypeMap.default;
                     const anchorKey = `${apiDocument.functionKey}-anchor`;
                     const topAnchorClassName = topAnchorId === anchorKey ? activeAnchorClassName : '';
+                    let isApiTestPassed = null;
+                    if(apiDocument.tests.length === apiDocument.tests.filter(test => test.isTestSuccess).length) {
+                        isApiTestPassed = true;
+                    } else if(0 !== apiDocument.tests.filter(test => false === test.isTestSuccess).length) {
+                        isApiTestPassed = false;
+                    }
                     return <a
                         className={`api-key-item list-group-item${topAnchorClassName}`}
                         key={index} href={`#${anchorKey}`}
                     >
-                        <span className={`api-method-badge badge badge-${badgeType.badgeType}`}>
-                            {badgeType.display || apiDocument.method}
-                        </span>
-                        {apiDocument.functionKey}
+                        <div className='api-display'>
+                            <span className={`api-method-badge badge badge-${badgeType.badgeType}`}>
+                                {badgeType.display || apiDocument.method}
+                            </span>
+                            {apiDocument.functionKey}
+                        </div>
+                        <div className='api-test-result'>
+                            {isApiTestPassed && <span className='badge badge-success'>PASS</span>}
+                            {false === isApiTestPassed && <span className='badge badge-danger'>FAIL</span>}
+                        </div>
                     </a>;
                 })}
             </div>
