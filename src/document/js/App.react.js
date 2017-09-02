@@ -2,10 +2,12 @@
 'use strict';
 import { connect } from 'react-redux';
 import React from 'react';
+import { processApiTest } from '../../utils.js';
 import SideBar from './SideBar.react.js';
 import BaseUrls from './BaseUrls.js';
 import BaseUrlComponent from './BaseUrl.react.js';
-import ApiDocument from './ApiDocument.react.js';
+import ApiDocuments from './ApiDocuments.js';
+import ApiDocumentComponent from './ApiDocument.react.js';
 import '../css/app.less';
 
 const ConnectedSideBar = connect(
@@ -25,6 +27,29 @@ const ConnectedBaseUrl = connect(
     }; },
 )(BaseUrlComponent);
 
+const ConnectedApiDocument = connect(
+    (state, ownProps) => { return {
+        baseUrl: state.baseUrls.using,
+    }; },
+    dispatch => { return {
+        fetchAllTest: ({ baseUrl, apiDocument }) => {
+            Promise.all(apiDocument.tests.map(test => {
+                return processApiTest({slsFunctionKey: apiDocument.functionKey, baseUrl, test });
+            }))
+            .then(testMessagesOfAllTests => {
+                return Promise.all(testMessagesOfAllTests.map((testMessages, index) => {
+                    const isTestSuccess = !!testMessages[0].match('^\\s*\\[PASS\\]');
+                    return dispatch(ApiDocuments.Actions.updateApiTestResult({
+                        testIndex: index, functionKey: apiDocument.functionKey,
+                        isTestSuccess, testMessages
+                    }));
+                }))
+            })
+            .catch(error => { console.log(error); });
+        },
+    }; },
+)(ApiDocumentComponent);
+
 class App extends React.Component {
     constructor(props) { super(props); }
     render() {
@@ -42,7 +67,7 @@ class App extends React.Component {
                     {apiDocuments.map((apiDocument, index) => {
                         return <div className='api-document-wrapper' key={index}>
                             <a className='in-site-anchor' id={`${apiDocument.functionKey}-anchor`}/>
-                            <ApiDocument apiDocument={apiDocument} />
+                            <ConnectedApiDocument apiDocument={apiDocument} />
                         </div>;
                     })}
                 </div>

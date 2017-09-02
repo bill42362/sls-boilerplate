@@ -19,7 +19,7 @@ const Reducer = (state = defaultState, action) => {
                         testMessages: action.payload.testMessages,
                     }
                 );
-                return state.map(api => (targetApi.functionKey === api.functionKey ? targetApi : api));
+                return state.map(api => targetApi.functionKey === api.functionKey ? Object.assign({}, targetApi) : api);
             } else {
                 return state;
             }

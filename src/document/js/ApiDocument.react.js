@@ -29,7 +29,7 @@ const ConnectedApiTest = connect(
 class ApiDocument extends React.Component {
     constructor(props) { super(props); }
     render() {
-        const { apiDocument } = this.props;
+        const { apiDocument, baseUrl, fetchAllTest } = this.props;
         const badgeType = badgeTypeMap[apiDocument.method] || badgeTypeMap.default;
         return <div className='api-document'>
             <h2 className='api-key'>
@@ -37,6 +37,12 @@ class ApiDocument extends React.Component {
                 <span className={`api-method-badge badge badge-${badgeType.badgeType}`}>
                     {apiDocument.method.toUpperCase()}
                 </span>
+                <div className='api-test-all-functions'>
+                    <button
+                        type='button' className='btn btn-primary'
+                        onClick={() => { fetchAllTest({ baseUrl, apiDocument }); }}
+                    >Test All</button>
+                </div>
             </h2>
             <div className='api-path card text-white bg-dark'>
                 <div className='card-body'>
