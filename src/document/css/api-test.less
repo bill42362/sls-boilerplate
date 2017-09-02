@@ -9,6 +9,26 @@ div.api-test {
         div.card-header {
             padding: 0.5em 1em;
             cursor: pointer;
+            div.card-header-content {
+                display: flex;
+                div.api-test-header-functions {
+                    flex: none;
+                    display: flex;
+                    align-items: center;
+                    button.btn.btn-sm {
+                        line-height: 1;
+                        cursor: pointer;
+                    }
+                }
+                div.api-test-description {
+                    flex: auto;
+                    margin-left: 0.5em;
+                }
+                div.api-test-result {
+                    flex: none;
+                    margin-left: 0.5em;
+                }
+            }
         }
         div.card-body {
             table.table {

@@ -13,6 +13,7 @@ class ApiTest extends React.Component {
             shouldFold: true, cardHeight: 'auto',
         };
         this.toggleFolding = this.toggleFolding.bind(this);
+        this.fetchTest = this.fetchTest.bind(this);
     }
     updateCardHeight() {
         const { shouldFold } = this.state;
@@ -28,12 +29,19 @@ class ApiTest extends React.Component {
         const { shouldFold } = this.state;
         this.setState({shouldFold: !shouldFold});
     }
+    fetchTest(e) {
+        e.stopPropagation();
+        const { baseUrl, apiTest, functionKey, testIndex, fetchTest } = this.props;
+        fetchTest({ baseUrl, apiTest, functionKey, testIndex });
+        return false;
+    }
     componentDidUpdate(prevProps, prevState) {
         if(this.state.shouldFold !== prevState.shouldFold) { this.updateCardHeight(); }
+        if(this.props.apiTest.isTestSuccess !== prevProps.apiTest.isTestSuccess) { this.updateCardHeight(); }
     }
     componentDidMount() { this.updateCardHeight(); }
     render() {
-        const { baseUrl, apiTest, expressPath } = this.props;
+        const { baseUrl, apiTest, expressPath, functionKey, testIndex } = this.props;
         const { cardHeight } = this.state;
         const queryKeys = Object.keys(apiTest.queries);
         const queryString = queryKeys.map(queryKey => `${queryKey}=${apiTest.queries[queryKey]}`).join('&');
@@ -42,10 +50,28 @@ class ApiTest extends React.Component {
         const hasQueryString = queryKeys.length;
         const noMatchedClassName = getMatchedExpressPath({targetPath: apiTest.path, expressPath }) ? '' : ' no-match';
         const fragmentedPath = splitPathByArguments({targetPath: apiTest.path, expressPath });
+        let cardBorderClassName = '';
+        if(apiTest.isTestSuccess) {
+            cardBorderClassName = ' border-success';
+        } else if(false === apiTest.isTestSuccess) {
+            cardBorderClassName = ' border-danger';
+        }
         return <div className='api-test'>
-            <div className='card' style={{height: cardHeight}}>
+            <div className={`card${cardBorderClassName}`} style={{height: cardHeight}}>
                 <div className='card-header' ref='header' onClick={this.toggleFolding}>
-                    {apiTest.description}
+                    <div className='card-header-content'>
+                        <div className='api-test-header-functions'>
+                            <button
+                                type='button' className='btn btn-primary btn-sm'
+                                onClick={this.fetchTest}
+                            >Test</button>
+                        </div>
+                        <div className='api-test-description'>{apiTest.description}</div>
+                        <div className='api-test-result'>
+                            {true === apiTest.isTestSuccess && <span className='badge badge-success'>PASS</span>}
+                            {false === apiTest.isTestSuccess && <span className='badge badge-danger'>FAIL</span>}
+                        </div>
+                    </div>
                 </div>
                 <div className='card-body' ref='body'>
                     <h5>Fetch</h5>

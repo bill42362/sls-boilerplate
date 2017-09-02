@@ -2,17 +2,27 @@
 'use strict';
 import { connect } from 'react-redux';
 import React from 'react';
+import { processApiTest } from '../../utils.js';
+import ApiDocuments from './ApiDocuments.js';
 import ApiTest from './ApiTest.react.js';
 import { badgeTypeMap } from './SharedConsts.js';
 import '../css/api-document.less';
 
 const ConnectedApiTest = connect(
-    state => {
-        return {
-            baseUrl: state.baseUrls.using,
-        };
-    },
+    state => { return {
+        baseUrl: state.baseUrls.using,
+    }; },
     dispatch => { return {
+        fetchTest: ({ baseUrl, apiTest, functionKey, testIndex }) => {
+            processApiTest({test: apiTest, slsFunctionKey: functionKey, baseUrl })
+            .then(testMessages => {
+                const isTestSuccess = !!testMessages[0].match('^\\s*\\[PASS\\]');
+                dispatch(ApiDocuments.Actions.updateApiTestResult({
+                    functionKey, testIndex, isTestSuccess, testMessages
+                }));
+            })
+            .catch(error => { console.log(error); });
+        },
     }; },
 )(ApiTest);
 
@@ -35,7 +45,11 @@ class ApiDocument extends React.Component {
             </div>
             <div className='api-tests'>
                 {apiDocument.tests.map((test, index) => {
-                    return <ConnectedApiTest key={index} apiTest={test} expressPath={apiDocument.expressPath} />;
+                    return <ConnectedApiTest
+                        key={index} apiTest={test} testIndex={index}
+                        functionKey={apiDocument.functionKey}
+                        expressPath={apiDocument.expressPath}
+                    />;
                 })}
             </div>
         </div>;
