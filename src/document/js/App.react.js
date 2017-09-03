@@ -24,6 +24,18 @@ const ConnectedBaseUrl = connect(
             dispatch(BaseUrls.Actions.updateUsingUrl({ url }))
             .catch(error => { console.log(error); });
         },
+        addEmptyAddonUrl: () => {
+            dispatch(BaseUrls.Actions.addAddonUrl({url: ''}))
+            .catch(error => { console.log(error); });
+        },
+        updateAddonUrl: ({ url, index }) => {
+            dispatch(BaseUrls.Actions.updateAddonUrl({ url, index }))
+            .catch(error => { console.log(error); });
+        },
+        removeAddonUrl: ({ index }) => {
+            dispatch(BaseUrls.Actions.removeAddonUrl({ index }))
+            .catch(error => { console.log(error); });
+        },
     }; },
 )(BaseUrlComponent);
 

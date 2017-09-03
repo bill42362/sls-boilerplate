@@ -10,6 +10,8 @@ div.base-url {
                 display: flex;
                 div.base-url-url-title {
                     flex: none;
+                    display: flex;
+                    align-items: center;
                     padding: 0.5rem 1rem;
                     min-width: 5em;
                     background-color: @titleBackground;
@@ -21,7 +23,22 @@ div.base-url {
                 }
                 div.base-url-url-display {
                     flex: 1;
+                    display: flex;
                     padding: 0.5rem 1rem;
+                    div.base-url-addon-url-input { flex: auto; }
+                    div.base-url-addon-url-delete {
+                        flex: none;
+                        margin-left: 0.5em;
+                        width: auto;
+                        button.btn { cursor: pointer; }
+                    }
+                }
+            }
+            div.base-url-functions {
+                padding: 0.5em;
+                button.btn {
+                    margin-right: 0.5em;
+                    cursor: pointer;
                 }
             }
         }
