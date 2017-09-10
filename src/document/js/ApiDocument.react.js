@@ -2,7 +2,6 @@
 'use strict';
 import { connect } from 'react-redux';
 import React from 'react';
-import { processApiTest } from '../../utils.js';
 import ApiDocuments from './ApiDocuments.js';
 import ApiTest from './ApiTest.react.js';
 import { badgeTypeMap } from './SharedConsts.js';
@@ -13,14 +12,8 @@ const ConnectedApiTest = connect(
         baseUrl: state.baseUrls.using,
     }; },
     dispatch => { return {
-        fetchTest: ({ baseUrl, apiTest, functionKey, testIndex }) => {
-            processApiTest({test: apiTest, slsFunctionKey: functionKey, baseUrl })
-            .then(testMessages => {
-                const isTestSuccess = !!testMessages[0].match('^\\s*\\[PASS\\]');
-                dispatch(ApiDocuments.Actions.updateApiTestResult({
-                    functionKey, testIndex, isTestSuccess, testMessages
-                }));
-            })
+        fetchTest: ({ baseUrl, functionKey, testIndex }) => {
+            dispatch(ApiDocuments.Actions.fetchTest({ baseUrl, functionKey, testIndex }))
             .catch(error => { console.log(error); });
         },
     }; },

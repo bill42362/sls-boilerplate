@@ -22,6 +22,7 @@ const ConnectedBaseUrl = connect(
     dispatch => { return {
         updateUsingUrl: ({ url }) => {
             dispatch(BaseUrls.Actions.updateUsingUrl({ url }))
+            .then(() => dispatch(ApiDocuments.Actions.clearAllTestResult()))
             .catch(error => { console.log(error); });
         },
         addEmptyAddonUrl: () => {
@@ -36,6 +37,10 @@ const ConnectedBaseUrl = connect(
             dispatch(BaseUrls.Actions.removeAddonUrl({ index }))
             .catch(error => { console.log(error); });
         },
+        fetchAllDocumentTests: ({ baseUrl }) => {
+            dispatch(ApiDocuments.Actions.fetchAllDocumentTests({ baseUrl }))
+            .catch(error => { console.log(error); });
+        },
     }; },
 )(BaseUrlComponent);
 
@@ -45,18 +50,13 @@ const ConnectedApiDocument = connect(
     }; },
     dispatch => { return {
         fetchAllTest: ({ baseUrl, apiDocument }) => {
-            Promise.all(apiDocument.tests.map(test => {
-                return processApiTest({slsFunctionKey: apiDocument.functionKey, baseUrl, test });
+            Promise.all(apiDocument.tests.map((test, index) => {
+                return dispatch(ApiDocuments.Actions.fetchTest({
+                    functionKey: apiDocument.functionKey,
+                    testIndex: index,
+                    baseUrl,
+                }));
             }))
-            .then(testMessagesOfAllTests => {
-                return Promise.all(testMessagesOfAllTests.map((testMessages, index) => {
-                    const isTestSuccess = !!testMessages[0].match('^\\s*\\[PASS\\]');
-                    return dispatch(ApiDocuments.Actions.updateApiTestResult({
-                        testIndex: index, functionKey: apiDocument.functionKey,
-                        isTestSuccess, testMessages
-                    }));
-                }))
-            })
             .catch(error => { console.log(error); });
         },
     }; },

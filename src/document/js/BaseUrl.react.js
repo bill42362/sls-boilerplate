@@ -16,7 +16,7 @@ class BaseUrl extends React.Component {
     render() {
         const {
             local, aws, others, addons, using,
-            addEmptyAddonUrl, updateAddonUrl, removeAddonUrl
+            addEmptyAddonUrl, updateAddonUrl, removeAddonUrl, fetchAllDocumentTests
         } = this.props;
         const usingLocalClassName = local === using ? ' using' : '';
         const usingAwsClassName = aws === using ? ' using' : '';
@@ -88,6 +88,7 @@ class BaseUrl extends React.Component {
                         >+</button>
                         <button
                             type='button' className='test-all-functions-button btn btn-sm btn-primary'
+                            onClick={() => fetchAllDocumentTests({baseUrl: using})}
                         >Test all functions</button>
                     </div>
                 </li>
