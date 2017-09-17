@@ -81,7 +81,7 @@ const fetchTest = ({ baseUrl, functionKey, testIndex }) => {
         if(!apiTest) { throw new Error('No apiTest found with given testIndex.'); }
         return processApiTest({test: apiTest, slsFunctionKey: functionKey, baseUrl })
         .then(testMessages => {
-            const isTestSuccess = !!testMessages[0].match('^\\s*\\[PASS\\]');
+            const isTestSuccess = !!testMessages[1].text.match('^\\s*\\[PASS\\]');
             dispatch(updateApiTestResult({ functionKey, testIndex, isTestSuccess, testMessages }));
         });
     };

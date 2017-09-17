@@ -141,6 +141,20 @@ class ApiTest extends React.Component {
                             </tr>
                         </tbody>
                     </table>
+                    {!!apiTest.testMessages && <div className='test-messages'>
+                        <h5>Test Message</h5>
+                        <pre>
+                            {apiTest.testMessages.map((message, index) => {
+                                return <span
+                                    key={index}
+                                    style={{color: message.color, backgroundColor: message.color.slice(2)}}
+                                >
+                                    {message.text}
+                                    {message.withNewLine && <br />}
+                                </span>;
+                            })}
+                        </pre>
+                    </div>}
                 </div>
             </div>
         </div>;
