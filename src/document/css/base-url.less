@@ -1,0 +1,46 @@
+// base-url.less
+@import './utils.less';
+@titleBackground: rgb(233, 236, 239);
+
+div.base-url {
+    ul.list-group {
+        li.list-group-item {
+            padding: 0px;
+            div.base-url-url {
+                display: flex;
+                div.base-url-url-title {
+                    flex: none;
+                    display: flex;
+                    align-items: center;
+                    padding: 0.5rem 1rem;
+                    min-width: 5em;
+                    background-color: @titleBackground;
+                    box-sizing: content-box;
+                    cursor: pointer;
+                    transition: color .6s ease;
+                    &:hover { background-color: darken(@titleBackground, 5%); }
+                    &.using { color: @bootsrtapGreen; }
+                }
+                div.base-url-url-display {
+                    flex: 1;
+                    display: flex;
+                    padding: 0.5rem 1rem;
+                    div.base-url-addon-url-input { flex: auto; }
+                    div.base-url-addon-url-delete {
+                        flex: none;
+                        margin-left: 0.5em;
+                        width: auto;
+                        button.btn { cursor: pointer; }
+                    }
+                }
+            }
+            div.base-url-functions {
+                padding: 0.5em;
+                button.btn {
+                    margin-right: 0.5em;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
