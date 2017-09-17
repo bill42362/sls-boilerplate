@@ -53,13 +53,11 @@ export const processApiTest = ({ test, baseUrl, slsFunctionKey }) => { return ne
     fetch(`${baseUrl}${path}?${queryString}`, { method, headers, body })
     .then(response => { 
         if(expectedResponseStatus !== response.status) {
-            return new Promise((res, rej) => {
-                rej({
-                    reason: RESPONSE_STATUS_ERROR,
-                    responseStatus: response.status,
-                    expectedResponseStatus,
-                });
-            });
+            throw {
+                reason: RESPONSE_STATUS_ERROR,
+                responseStatus: response.status,
+                expectedResponseStatus
+            };
         } else {
             return response.json();
         }
@@ -69,11 +67,13 @@ export const processApiTest = ({ test, baseUrl, slsFunctionKey }) => { return ne
         if(JSON.stringify(response) !== JSON.stringify(Object.assign({}, response, expectedResponse))) {
             const result = [];
             result.push(
-                '    ' + '[FAIL]'.bgRed
-                    + ' Test of '.red
-                    + `[${slsFunctionKey}]`.cyan
-                    + ` which `.red + `${description}`.yellow,
-                `      because response not fullfill.`.red
+                {text: '    ', color: 'white', withNewLine: false},
+                {text: '[FAIL]', color: 'bgRed', withNewLine: false},
+                {text: ' Test of ', color: 'gray', withNewLine: false},
+                {text: `[${slsFunctionKey}]`, color: 'cyan', withNewLine: false},
+                {text: ` which `, color: 'gray', withNewLine: false},
+                {text: `${description}`, color: 'yellow', withNewLine: true},
+                {text: `      because response not fullfill.`, color: 'red', withNewLine: true},
             );
             const responsePropStrings = "      {\n" + Object.keys(response).map(responseKey => {
                 return `        ${responseKey}: ${JSON.stringify(response[responseKey])},`;
@@ -85,38 +85,45 @@ export const processApiTest = ({ test, baseUrl, slsFunctionKey }) => { return ne
             diff.forEach(line => {
                 if("\n" === line.value) { return; }
                 const color = line.added ? 'green' : line.removed ? 'red' : 'grey';
-                result.push((line.value.replace(/^\n/, '').replace(/\n$/, ''))[color]);
+                result.push({text: line.value.replace(/^\n/, '').replace(/\n$/, ''), withNewLine: true, color });
             });
-            return new Promise((res, rej) => {
-                rej({reason: RESPONSE_NOT_FULLFILL, result });
-            });
+            throw {reason: RESPONSE_NOT_FULLFILL, result };
         } else {
-           const result = '    ' + '[PASS]'.bgGreen
-                + ` Test of `.gray
-                + `[${slsFunctionKey}]`.cyan
-                + ` which `.gray + `${description}`.yellow;
-            resolve([result]);
+            resolve([
+                {text: '    ', color: 'white', withNewLine: false},
+                {text: '[PASS]', color: 'bgGreen', withNewLine: false},
+                {text: ` Test of `, color: 'gray', withNewLine: false},
+                {text: `[${slsFunctionKey}]`, color: 'cyan', withNewLine: false},
+                {text: ` which `, color: 'gray', withNewLine: false},
+                {text: `${description}`, color: 'yellow', withNewLine: true},
+            ]);
         }
     })
     .catch(error => {
         if(RESPONSE_STATUS_ERROR === error.reason) {
             resolve([
-                '    ' + '[FAIL]'.bgRed
-                    + `Test of `.gray + `[${slsFunctionKey}]`.cyan
-                    + ` which `.gray + `${description}`.yellow,
-                `      because respond wrong status.`.red,
-                `      expectedResponseStatus: ${error.expectedResponseStatus}`.green,
-                `      responseStatus: ${error.responseStatus}`.red
+                {text: '    ', color: 'white', withNewLine: false},
+                {text: '[FAIL]', color: 'bgRed', withNewLine: false},
+                {text: ` Test of `, color: 'gray', withNewLine: false},
+                {text: `[${slsFunctionKey}]`, color: 'cyan', withNewLine: false},
+                {text: ` which `, color: 'gray', withNewLine: false},
+                {text: `${description}`, color: 'yellow', withNewLine: true},
+                {text: `      because respond wrong status.`, color: 'red', withNewLine: true},
+                {text: `      expectedResponseStatus: ${error.expectedResponseStatus}`, color: 'green', withNewLine: true},
+                {text: `      responseStatus: ${error.responseStatus}`, color: 'red', withNewLine: true},
             ]);
         } else if(RESPONSE_NOT_FULLFILL === error.reason) {
             resolve(error.result);
         } else {
             resolve([
-                '    ' + '[FAIL]'.bgRed
-                    + ` Test of `.gray + `[${slsFunctionKey}]`.cyan
-                    + ` which `.gray + `${description}`.yellow,
-                '      because api call error.'.red,
-                `      error: ${error}`.red
+                {text: '    ', color: 'white', withNewLine: false},
+                {text: '[FAIL]', color: 'bgRed', withNewLine: false},
+                {text: ` Test of `, color: 'gray', withNewLine: false},
+                {text: `[${slsFunctionKey}]`, color: 'cyan', withNewLine: false},
+                {text: ` which `, color: 'gray', withNewLine: false},
+                {text: `${description}`, color: 'yellow', withNewLine: true},
+                {text: '      because api call error.', color: 'red', withNewLine: true},
+                {text: `      error: ${error}`, color: 'red', withNewLine: true},
             ]);
         }
     });

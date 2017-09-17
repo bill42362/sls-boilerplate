@@ -22,7 +22,11 @@ Object.keys(slsConfig.functions).forEach(slsFunctionKey => {
         console.log('  Testing of '.gray + `[${slsFunctionKey}]`.cyan + ':'.gray);
         testResults.forEach(testResult => {
             testResult.forEach(testResultLine => {
-                console.log(testResultLine);
+                if(!testResultLine.withNewLine) {
+                    process.stdout.write((testResultLine.text)[testResultLine.color]);
+                } else {
+                    console.log((testResultLine.text)[testResultLine.color]);
+                }
             });
         });
     })
