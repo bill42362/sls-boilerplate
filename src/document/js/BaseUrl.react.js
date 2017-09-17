@@ -7,12 +7,21 @@ class BaseUrl extends React.Component {
     constructor(props) {
         super(props);
         this.updateUsingUrl = this.updateUsingUrl.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
     }
     updateUsingUrl(e) {
         const { updateUsingUrl } = this.props;
         const url = e.target.getAttribute('data-url');
         if(url && updateUsingUrl) { updateUsingUrl({ url }); }
     }
+    onKeyUp(e) {
+        if('T' === e.key) {
+            const { using, fetchAllDocumentTests } = this.props;
+            fetchAllDocumentTests({baseUrl: using});
+        }
+    }
+    componentDidMount() { window.addEventListener('keyup', this.onKeyUp, false); }
+    componentWillUnmount() { window.removeEventListener('keyup', this.onKeyUp, false); }
     render() {
         const {
             local, aws, others, addons, using,
@@ -89,7 +98,10 @@ class BaseUrl extends React.Component {
                         <button
                             type='button' className='test-all-functions-button btn btn-sm btn-primary'
                             onClick={() => fetchAllDocumentTests({baseUrl: using})}
-                        >Test all functions</button>
+                        >
+                            Test all functions
+                            <span className='hot-key-display'>Hotkey: T</span>
+                        </button>
                     </div>
                 </li>
             </ul>
