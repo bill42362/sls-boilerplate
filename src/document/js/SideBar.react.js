@@ -50,10 +50,12 @@ class SideBar extends React.Component {
                     const anchorKey = `${apiDocument.functionKey}-anchor`;
                     const topAnchorClassName = topAnchorId === anchorKey ? activeAnchorClassName : '';
                     let isApiTestPassed = null;
-                    if(apiDocument.tests.length === apiDocument.tests.filter(test => test.isTestSuccess).length) {
-                        isApiTestPassed = true;
-                    } else if(0 !== apiDocument.tests.filter(test => false === test.isTestSuccess).length) {
-                        isApiTestPassed = false;
+                    if(apiDocument.tests && apiDocument.tests.length) {
+                        if(apiDocument.tests.length === apiDocument.tests.filter(test => test.isTestSuccess).length) {
+                            isApiTestPassed = true;
+                        } else if(0 !== apiDocument.tests.filter(test => false === test.isTestSuccess).length) {
+                            isApiTestPassed = false;
+                        }
                     }
                     return <a
                         className={`api-key-item list-group-item${topAnchorClassName}`}
