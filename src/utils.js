@@ -1,6 +1,5 @@
 // utils.js
 'use strict';
-import 'colors';
 import 'isomorphic-fetch';
 const Diff = require('diff');
 
