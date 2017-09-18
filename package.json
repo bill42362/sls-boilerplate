@@ -1,6 +1,6 @@
 {
   "name": "sls-boilerplate",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Serverless boilerplate with express server, auto test and web document.",
   "repository": {
     "type": "git",
