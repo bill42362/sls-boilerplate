@@ -30,19 +30,19 @@ class ApiDocument extends React.Component {
                 <span className={`api-method-badge badge badge-${badgeType.badgeType}`}>
                     {apiDocument.method.toUpperCase()}
                 </span>
-                <div className='api-test-all-functions'>
+                {!!apiDocument.tests && <div className='api-test-all-functions'>
                     <button
                         type='button' className='btn btn-primary'
                         onClick={() => { fetchAllTest({ baseUrl, apiDocument }); }}
                     >Test All</button>
-                </div>
+                </div>}
             </h2>
             <div className='api-path card text-white bg-dark'>
                 <div className='card-body'>
                     {apiDocument.expressPath}
                 </div>
             </div>
-            <div className='api-tests'>
+            {!!apiDocument.tests && <div className='api-tests'>
                 {apiDocument.tests.map((test, index) => {
                     return <ConnectedApiTest
                         key={index} apiTest={test} testIndex={index}
@@ -50,7 +50,7 @@ class ApiDocument extends React.Component {
                         expressPath={apiDocument.expressPath}
                     />;
                 })}
-            </div>
+            </div>}
         </div>;
     }
 }
