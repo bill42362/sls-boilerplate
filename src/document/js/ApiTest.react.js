@@ -47,7 +47,7 @@ class ApiTest extends React.Component {
         const queryString = queryKeys.map(queryKey => `${queryKey}=${apiTest.queries[queryKey]}`).join('&');
         const isGetPath = 'get' === apiTest.method.toLowerCase();
         const fullPath = `${baseUrl}${apiTest.path}?${queryString}`;
-        const hasQueryString = queryKeys.length;
+        const hasQueryString = !!queryKeys.length;
         const noMatchedClassName = getMatchedExpressPath({targetPath: apiTest.path, expressPath }) ? '' : ' no-match';
         const fragmentedPath = splitPathByArguments({targetPath: apiTest.path, expressPath });
         let cardBorderClassName = '';
