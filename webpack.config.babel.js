@@ -1,7 +1,10 @@
 // webpack.config.babel.js
+const { makeDocumentJson } = require(`${__dirname}/` + 'src/makeDocumentJson.js');
 
 const isProd = process.env.NODE_ENV === 'production';
 const WDS_PORT = 7000;
+
+makeDocumentJson();
 
 export default {
     entry: [
